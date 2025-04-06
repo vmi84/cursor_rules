@@ -17,3 +17,42 @@
    interface Props { name: string }
    const MyComponent = ({ name }: Props) => <div>{name}</div>
    export default MyComponent
+
+#Styling Standards
+5. Use Tailwind CSS classes for styling. Group related classes (e.g., layout, typography) on the same line. Avoid inline styles.
+   @file ../tailwind.config.js
+
+#Deprecation Prevention
+6. Do not use class components or Redux with connect(). Use Redux Toolkit instead if state management is needed.
+
+#Testing Automation
+7. When writing a function, suggest a Jest test case with at least one happy path and one edge case. Create tests in `__tests__` folder:
+   ```typescript:__tests__/function.test.ts
+   describe('add', () => {
+     it('handles happy path', () => { expect(add(2, 3)).toBe(5); });
+     it('handles edge case', () => { expect(add(-1, 0)).toBe(-1); });
+   });
+
+- **Meaning**: When you ask the AI to write a function, it should also suggest a Jest test file (e.g., `__tests__/function.test.ts`) with two test cases: one for normal use (happy path) and one for an unusual scenario (edge case). The `typescript:path` syntax tells Cursor to create this file directly in the project.
+- **Action**: None now. This happens automatically when you request a function.
+
+# Next.js Routing
+8. For page components, use App Router syntax. Place them in `app/` directory:
+   ```typescript:app/page.tsx
+   export default function Page() { return <h1>Hello</h1>; }
+
+# Edge Case Handling
+9. For form inputs, check null/undefined values and provide defaults (e.g., ''). Suggest zod validation.
+
+# Verification
+10. After generating code, validate against @file ../tsconfig.json and suggest 'npm test' if tests exist. Warn if rules are violated.
+
+# Agent Chat Logging
+11. For every Agent mode interaction, append a summary to `agent_chat_history.md` in the project root:
+   ```markdown:agent_chat_history.md
+   ## 2025-04-06 09:15 AM PDT
+   **Prompt**: [User prompt here]
+   **Response**: [AI response here]
+
+# Xcode/SwiftUI Integration
+12. When queries contain "xcode" or "swiftui", include @file .cursorreferences for best practices and documentation.
