@@ -1,4 +1,4 @@
-# When included via @file, use these resources for Xcode/SwiftUI queries:
+# When included via @refs, use these resources for Xcode/SwiftUI queries:
 
 - [Xcode Docs](developer.apple.com/documentation/xcode)
 - [GitHub Xcode Search](github.com/search?q=xcode+documentation)
