@@ -56,3 +56,50 @@
 
 # Xcode/SwiftUI Integration
 12. When queries contain "xcode" or "swiftui", include @file .cursorreferences for best practices and documentation.
+
+# Debug Logging
+13. Implement a global logging utility to pipe all development logs to a project-specific `.projectlog` file in the project root. Define it in a `logger.ts` file at the project root and use it across all modules. The utility should check for `.projectlog` when the project is opened: if it exists, pipe logs to it; if not, create it with a header and then pipe logs. Support log levels (info, warn, error) with a context prefix and timestamp. Example implementation:
+   ```typescript:logger.ts
+   import { appendFileSync, existsSync } from 'fs';
+
+   type LogLevel = 'info' | 'warn' | 'error';
+
+   const logFile = '.projectlog';
+
+   // Check if .projectlog exists; if not, create it with a header
+   if (!existsSync(logFile)) {
+     try {
+       appendFileSync(logFile, `--- New Project Log Started: ${new Date().toISOString()} ---\n`);
+     } catch (err) {
+       console.error('Failed to create log file:', err);
+     }
+   }
+
+   const logger = {
+     log: (context: string, message: string, ...args: any[]) => {
+       const logMessage = `[${new Date().toISOString()}] [${context}] INFO: ${message} ${args.length ? JSON.stringify(args) : ''}\n`;
+       try {
+         appendFileSync(logFile, logMessage);
+       } catch (err) {
+         console.error('Failed to write to log file:', err);
+       }
+     },
+     warn: (context: string, message: string, ...args: any[]) => {
+       const logMessage = `[${new Date().toISOString()}] [${context}] WARN: ${message} ${args.length ? JSON.stringify(args) : ''}\n`;
+       try {
+         appendFileSync(logFile, logMessage);
+       } catch (err) {
+         console.error('Failed to write to log file:', err);
+       }
+     },
+     error: (context: string, message: string, ...args: any[]) => {
+       const logMessage = `[${new Date().toISOString()}] [${context}] ERROR: ${message} ${args.length ? JSON.stringify(args) : ''}\n`;
+       try {
+         appendFileSync(logFile, logMessage);
+       } catch (err) {
+         console.error('Failed to write to log file:', err);
+       }
+     }
+   };
+
+   export default logger;
