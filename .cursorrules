@@ -103,3 +103,37 @@
    };
 
    export default logger;
+
+# Python Logging Integration
+14. For Python-based projects, use the cursor_logs.py script in .cursor/rules/ to handle logging. The script will automatically:
+    - Create a .projectlog file if it doesn't exist
+    - Log all Cursor events with timestamps and context
+    - Support different log levels (INFO, DEBUG, WARN, ERROR)
+    - Include file and line information when available
+    Example usage in Python code:
+    ```python
+    from subprocess import run
+    run(['python3', '.cursor/rules/cursor_logs.py', 'INFO', 'MODULE', 'Message', 'file=example.py'])
+    ```
+
+# File/Folder Naming
+15. Prevent duplicate file or folder names in the project. Before creating a new file or folder, check if a file or folder with the same name already exists in the target directory. If a duplicate is detected:
+   - For files: Append a unique identifier (e.g., timestamp or counter) to the filename
+   - For folders: Suggest an alternative name or append a descriptive suffix
+   Example implementation:
+   ```typescript:utils/fileUtils.ts
+   import { existsSync } from 'fs';
+   import { join } from 'path';
+
+   function getUniqueFileName(basePath: string, fileName: string): string {
+     let counter = 1;
+     let uniqueName = fileName;
+     const [name, ext] = fileName.split('.');
+     
+     while (existsSync(join(basePath, uniqueName))) {
+       uniqueName = `${name}_${counter}.${ext}`;
+       counter++;
+     }
+     return uniqueName;
+   }
+   ```
